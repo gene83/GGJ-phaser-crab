@@ -4,6 +4,7 @@ class Beach extends Phaser.Scene {
   }
 
   preload() {
+    this.load.image('bg', 'assets/background-sand.png');
     this.load.spritesheet('crab', 'assets/crab.png', {
       frameWidth: 250,
       frameHeight: 200
@@ -11,8 +12,18 @@ class Beach extends Phaser.Scene {
   }
 
   create() {
+
+    this.add.image(400, 300, 'bg');
+
+    this.cameras.main.setBounds(0, 0, 800 * 2, 600 * 2);
+    this.physics.world.setBounds(0, 0, 800 * 2, 600 * 2);
+
     this.player = this.physics.add.sprite(300, 400, 'crab');
     this.player.setCollideWorldBounds(true);
+    this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
+
+
+
 
     this.anims.create({
       key: 'walk',
