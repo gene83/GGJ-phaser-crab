@@ -1,13 +1,11 @@
-const Phaser = require('phaser');
-
 const config = {
-  type: phaser.auto,
-  width: 300,
+  type: Phaser.auto,
+  width: 800,
   height: 600,
   physics: {
     default: 'arcade'
   },
-  scene: [beach]
+  scene: [Beach]
 };
 
 const game = new Phaser.Game(config);
