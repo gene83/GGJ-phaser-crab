@@ -9,21 +9,25 @@ class Beach extends Phaser.Scene {
       frameWidth: 250,
       frameHeight: 200
     });
+    this.load.spritesheet('light', 'assets/spotlight.png', {
+      frameWidth: 250,
+      frameHeight: 200
+    });
   }
 
   create() {
-
     this.add.image(400, 300, 'bg');
 
     this.cameras.main.setBounds(0, 0, 800 * 2, 600 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 600 * 2);
 
-    this.player = this.physics.add.sprite(300, 400, 'crab');
-    this.player.setCollideWorldBounds(true);
-    this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
-
-
-
+    this.anims.create({
+      key: 'light',
+      frames: this.anims.generateFrameNumbers('light', {
+        start: 0,
+        end: 1
+      })
+    });
 
     this.anims.create({
       key: 'walk',
@@ -34,6 +38,36 @@ class Beach extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
+
+    this.spriteBounds = Phaser.Geom.Rectangle.Inflate(
+      Phaser.Geom.Rectangle.Clone(this.physics.world.bounds),
+      -100,
+      -100
+    );
+
+    for (let i = 0; i < 5; i++) {
+      let pos = Phaser.Geom.Rectangle.Random(this.spriteBounds);
+
+      let block = this.physics.add.sprite(pos.x, pos.y, 'light');
+
+      block.setVelocity(
+        Phaser.Math.Between(200, 400),
+        Phaser.Math.Between(200, 400)
+      );
+      block.setBounce(1).setCollideWorldBounds(true);
+
+      if (Math.random() > 0.5) {
+        block.body.velocity.x *= -1;
+      } else {
+        block.body.velocity.y *= -1;
+      }
+
+      block.play('light');
+    }
+
+    this.player = this.physics.add.sprite(300, 400, 'crab');
+    this.player.setCollideWorldBounds(true);
+    this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     this.key_LEFT = this.input.keyboard.addKey(
