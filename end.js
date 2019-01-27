@@ -11,7 +11,7 @@ class End extends Phaser.Scene {
     this.message = this.add.text(280, 300, "YOU'VE BEEN CAUGHT!", {
       font: '60px monospace'
     });
-    this.scoreData = this.add.text(320, 380, 'SCORE: ' + this.points, {
+    this.scoreData = this.add.text(450, 380, 'SCORE: ' + this.points, {
       font: '60px monospace'
     });
     this.restart = this.add.text(380, 700, "RESTART", { fill: '#F57C00', font: '100px monospace' });
