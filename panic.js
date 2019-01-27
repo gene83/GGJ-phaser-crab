@@ -11,7 +11,10 @@ class Panic extends Phaser.Scene {
       frameHeight: 55
     });
 
-    this.load.image('light', 'assets/spotlight.png');
+    this.load.spritesheet('net', 'assets/net.png', {
+      frameWidth: 336,
+      frameHeight: 560
+    });
   }
 
   create() {
@@ -23,13 +26,24 @@ class Panic extends Phaser.Scene {
     this.player.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
 
+    this.net = this.physics.add.sprite(400, 400, 'net');
+
     this.anims.create({
-      key: 'walk',
+      key: 'panicWalk',
       frames: this.anims.generateFrameNumbers('crab', {
         start: 0,
         end: 1
       }),
-      frameRate: 20,
+      frameRate: 20
+    });
+
+    this.anims.create({
+      key: 'netDown',
+      frames: this.anims.generateFrameNumbers('net', {
+        start: 0,
+        end: 3
+      }),
+      frameRate: 4,
       repeat: -1
     });
 
@@ -49,28 +63,29 @@ class Panic extends Phaser.Scene {
     if (this.key_UP.isDown) {
       this.player.setVelocityY(-800);
 
-      this.player.anims.play('walk', true);
+      this.player.anims.play('panicWalk', true);
     } else if (this.key_LEFT.isDown) {
       this.player.setVelocityX(-800);
 
-      this.player.anims.play('walk', true);
+      this.player.anims.play('panicWalk', true);
     } else if (this.key_DOWN.isDown) {
       this.player.setVelocityY(800);
 
-      this.player.anims.play('walk', true);
+      this.player.anims.play('panicWalk', true);
     } else if (this.key_RIGHT.isDown) {
       this.player.setVelocityX(800);
 
-      this.player.anims.play('walk', true);
+      this.player.anims.play('panicWalk', true);
     } else {
-      // this.player.setVelocityX(0);
-      // this.player.setVelocityY(0);
+      this.player.setVelocityX(0);
+      this.player.setVelocityY(0);
 
-      this.player.anims.play('walk', false);
+      this.player.anims.play('panicWalk', true);
     }
 
-    this.cameras.main.flash(500, 198, 40, 40, false);
-    this.cameras.main.shake(1000, 0.005, false);
-  }
+    // this.cameras.main.flash(500, 198, 40, 40, false);
+    // this.cameras.main.shake(1000, 0.005, false);
 
+    this.net.anims.play('netDown', true);
+  }
 }
