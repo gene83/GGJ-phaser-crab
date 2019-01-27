@@ -5,7 +5,7 @@ const config = {
   physics: {
     default: 'arcade'
   },
-  scene: [Menu, Beach, Panic]
+  scene: [Menu, Beach, Panic, End]
 };
 
 const game = new Phaser.Game(config);
