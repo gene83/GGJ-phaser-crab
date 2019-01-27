@@ -6,8 +6,8 @@ class Beach extends Phaser.Scene {
   preload() {
     this.load.image('bg', 'assets/background-sand.png');
     this.load.spritesheet('crab', 'assets/crab.png', {
-      frameWidth: 250,
-      frameHeight: 200
+      frameWidth: 100,
+      frameHeight: 55
     });
     this.load.image('light', 'assets/spotlight.png');
   }
