@@ -39,7 +39,7 @@ class Beach extends Phaser.Scene {
   }
 
   create() {
-    this.background = this.add.image(0, 0, 'bg');
+    this.background = this.add.image(800, 6000, 'bg');
     this.background.height = this.game.height;
     this.background.weight = this.game.weight;
 
@@ -51,8 +51,8 @@ class Beach extends Phaser.Scene {
     this.shining = this.add.group();
 
 
-    this.cameras.main.setBounds(0, 0, 800 * 2, 3800 * 2);
-    this.physics.world.setBounds(0, 0, 800 * 2, 3800 * 2);
+    this.cameras.main.setBounds(0, 0, 800 * 2, 6000 * 2);
+    this.physics.world.setBounds(0, 0, 800 * 2, 6000 * 2);
 
     this.plankton = this.physics.add.sprite(100, 100, 'plankton');
     this.plankton.setCollideWorldBounds(true);

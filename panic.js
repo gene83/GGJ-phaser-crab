@@ -4,7 +4,7 @@ class Panic extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('redBG', 'assets/background-sand-red.png');
+    this.load.image('BG', 'assets/background-sand.png');
 
     this.load.spritesheet('crab', 'assets/crab.png', {
       frameWidth: 100,
@@ -15,7 +15,7 @@ class Panic extends Phaser.Scene {
   }
 
   create() {
-    this.background = this.add.image(800, 5000, 'redBG');
+    this.background = this.add.image(800, 5000, 'BG');
     this.cameras.main.setBounds(0, 0, 800 * 2, 5000 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 5000 * 2);
 
@@ -69,7 +69,7 @@ class Panic extends Phaser.Scene {
       this.player.anims.play('walk', false);
     }
 
-    this.cameras.main.flash(500, 1.0, 1.0, 1.0, false);
+    this.cameras.main.flash(500, 198, 40, 40, false);
     this.cameras.main.shake(1000, 0.005, false);
   }
 
