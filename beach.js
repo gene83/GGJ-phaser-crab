@@ -39,15 +39,21 @@ class Beach extends Phaser.Scene {
   }
 
   create() {
-    this.background = this.add.image(0, 0, 'bg');
+    this.background = this.add.image(800, 6000, 'bg');
     this.background.height = this.game.height;
     this.background.weight = this.game.weight;
 
     this.lights = this.add.group();
     this.shining = this.add.group();
 
+<<<<<<< HEAD
     this.cameras.main.setBounds(0, 0, 800 * 2, 3800 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 3800 * 2);
+=======
+
+    this.cameras.main.setBounds(0, 0, 800 * 2, 6000 * 2);
+    this.physics.world.setBounds(0, 0, 800 * 2, 6000 * 2);
+>>>>>>> 7d3c0463a2efd544590f38fa16be9eafcfd14a01
 
     this.player = this.physics.add.sprite(300, 400, 'crab');
     this.player.setCollideWorldBounds(true);
