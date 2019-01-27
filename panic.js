@@ -29,7 +29,7 @@ class Panic extends Phaser.Scene {
         start: 0,
         end: 1
       }),
-      frameRate: 10,
+      frameRate: 20,
       repeat: -1
     });
 
@@ -47,24 +47,24 @@ class Panic extends Phaser.Scene {
 
   update(delta) {
     if (this.key_UP.isDown) {
-      this.player.setVelocityY(-400);
+      this.player.setVelocityY(-800);
 
       this.player.anims.play('walk', true);
     } else if (this.key_LEFT.isDown) {
-      this.player.setVelocityX(-400);
+      this.player.setVelocityX(-800);
 
       this.player.anims.play('walk', true);
     } else if (this.key_DOWN.isDown) {
-      this.player.setVelocityY(400);
+      this.player.setVelocityY(800);
 
       this.player.anims.play('walk', true);
     } else if (this.key_RIGHT.isDown) {
-      this.player.setVelocityX(400);
+      this.player.setVelocityX(800);
 
       this.player.anims.play('walk', true);
     } else {
-      this.player.setVelocityX(0);
-      this.player.setVelocityY(0);
+      // this.player.setVelocityX(0);
+      // this.player.setVelocityY(0);
 
       this.player.anims.play('walk', false);
     }
