@@ -46,6 +46,12 @@ class Beach extends Phaser.Scene {
     });
 
     this.load.on('complete', () => {
+      progressBar.clear();
+      progressBar.fillStyle(0xffffff, 1);
+      progressBar.fillRect(250, 280, 300 * value, 30);
+    });
+
+    this.load.on('complete', () => {
       progressBar.destroy();
       progressBox.destroy();
       loadingText.destroy();
@@ -76,14 +82,24 @@ class Beach extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 800 * 2, 6000 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 6000 * 2);
 
-    this.plankton = this.physics.add.sprite(100, 100, 'plankton');
-    this.plankton.setCollideWorldBounds(true);
+    this.player = this.physics.add.sprite(300, 400, 'crab');
+    this.player.setCollideWorldBounds(true);
+    this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
 
-    this.spriteBounds = Phaser.Geom.Rectangle.Inflate(
-      Phaser.Geom.Rectangle.Clone(this.physics.world.bounds),
-      -100,
-      -100
-    );
+    this.anims.create({
+      key: 'walk',
+      frames: this.anims.generateFrameNumbers('crab', {
+        start: 0,
+        end: 1
+      }),
+      frameRate: 10,
+      repeat: -1
+    });
+
+    this.plankton = this.physics.add.sprite(100, 100, 'plankton');
+    this.shining.add(this.plankton);
+    // this.plankton.setCollideWorldBounds(true);
+
 
     this.player = this.physics.add.sprite(300, 400, 'crab');
     this.player.setCollideWorldBounds(true);
@@ -98,6 +114,41 @@ class Beach extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
+    this.anims.create({
+      key: 'shine',
+      frames: this.anims.generateFrameNumbers('plankton', {
+        start: 0,
+        end: 4
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    this.config = {
+      key: 'shine',
+      x: { randInt: [0, 2000] },
+      y: { randInt: [0, 10800] },
+      scale: { randFloat: [0.5, 0.5] },
+      anims: 'shine'
+    };
+
+    for (var i = 0; i < 80; i++) {
+      this.food = this.make.sprite(this.config);
+      this.shining.add(this.food);
+      // console.log(this.shining);
+    }
+
+
+    this.physics.add.overlap(this.shining, this.player, (player, food) => {
+      console.log("SCORE WORKING")
+      // this.plankton.disableBody(true, true);
+      this.score = 0;
+      this.score += 1
+      console.log('SCORE', this.score);
+    },
+      null,
+      this
+    );
 
     // ADDS SPOTLIGHTS
     this.spriteBounds = Phaser.Geom.Rectangle.Inflate(
