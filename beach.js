@@ -18,15 +18,17 @@ class Beach extends Phaser.Scene {
   create() {
     this.add.image(400, 300, 'bg');
 
-    this.cameras.main.setBounds(0, 0, 800 * 2, 600 * 2);
-    this.physics.world.setBounds(0, 0, 800 * 2, 600 * 2);
+    this.cameras.main.setBounds(0, 0, 800 * 2, 7800 * 2);
+    this.physics.world.setBounds(0, 0, 800 * 2, 7800 * 2);
 
     this.anims.create({
       key: 'light',
       frames: this.anims.generateFrameNumbers('light', {
         start: 0,
         end: 1
-      })
+      }),
+      frameRate: 10,
+      repeat: -1
     });
 
     this.anims.create({
@@ -83,19 +85,19 @@ class Beach extends Phaser.Scene {
 
   update(delta) {
     if (this.key_UP.isDown) {
-      this.player.setVelocityY(-160);
+      this.player.setVelocityY(-400);
 
       this.player.anims.play('walk', true);
     } else if (this.key_LEFT.isDown) {
-      this.player.setVelocityX(-160);
+      this.player.setVelocityX(-400);
 
       this.player.anims.play('walk', true);
     } else if (this.key_DOWN.isDown) {
-      this.player.setVelocityY(160);
+      this.player.setVelocityY(400);
 
       this.player.anims.play('walk', true);
     } else if (this.key_RIGHT.isDown) {
-      this.player.setVelocityX(160);
+      this.player.setVelocityX(400);
 
       this.player.anims.play('walk', true);
     } else {
