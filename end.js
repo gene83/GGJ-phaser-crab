@@ -3,7 +3,12 @@ class End extends Phaser.Scene {
     super({ key: 'End' });
   }
 
+  init(data) {
+    this.points = data.points;
+  }
+
   create() {
-    this.text = 'GAME OVER';
+    this.text = this.add.text(`YOU'VE BEEN CAUGHT
+    Score: ${this.points}`);
   }
 }

@@ -1,6 +1,11 @@
 class Panic extends Phaser.Scene {
   constructor() {
     super({ key: 'Panic' });
+    this.points = null;
+  }
+
+  init(data) {
+    this.points = data.points;
   }
 
   preload() {
@@ -27,8 +32,8 @@ class Panic extends Phaser.Scene {
     this.background = this.add.image(800, 5000, 'BG');
     this.cameras.main.setBounds(0, 0, 800 * 2, 5000 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 5000 * 2);
-    this.score = this.points;
-    this.scoreText = this.add.text(16, 16, 'Score: 0', {
+    // (this.score = this.points),
+    this.scoreText = this.add.text(16, 16, `Score: ${this.points}`, {
       font: '60px monospace',
       fill: 'rgba(255, 255, 255, 0.75)'
     });
@@ -88,7 +93,7 @@ class Panic extends Phaser.Scene {
 
     this.makeNet = this.createNet.bind(this);
 
-    this.intervalId = setInterval(this.makeNet, 300);
+    this.intervalId = setInterval(this.makeNet, 375);
     this.nets.playAnimation('netDown');
 
     this.physics.add.overlap(
@@ -100,7 +105,7 @@ class Panic extends Phaser.Scene {
         this.cameras.main.fade(2000, 0, 0, 0);
 
         setTimeout(() => {
-          this.scene.start('Beach');
+          this.scene.start('Beach', { points: this.points });
         }, 2000);
       },
       null,
@@ -112,8 +117,8 @@ class Panic extends Phaser.Scene {
         this.dreaded.stop();
         this.scene.pause();
         setTimeout(() => {
-          this.scene.start('End');
-        }, 2000);
+          this.scene.start('End', { points: this.points });
+        }, 1000);
       }
     });
 
