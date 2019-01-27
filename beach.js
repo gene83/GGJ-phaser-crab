@@ -146,7 +146,7 @@ class Beach extends Phaser.Scene {
     );
 
     function onEvent() {
-      // this.scene.start('Panic');
+      this.scene.start('Panic');
     }
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
