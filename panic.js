@@ -19,6 +19,8 @@ class Panic extends Phaser.Scene {
       frameWidth: 336,
       frameHeight: 560
     });
+    this.load.audio('tada', 'assets/ta-da.mp3');
+    this.load.audio('dreaded', 'assets/dreaded.mp3');
   }
 
   create() {
@@ -32,8 +34,12 @@ class Panic extends Phaser.Scene {
     });
     this.scoreText.setScrollFactor(0);
 
-    // this.hole = this.physics.add.image(800, 9900, 'hole');
-    this.hole = this.physics.add.image(800, 9900, 'hole');
+    this.dreaded = this.sound.add('dreaded');
+    this.dreaded.play();
+
+    this.hole = this.add.image(800, 9900, 'hole');
+    // this.hole.setCollideWorldBounds(true);
+    this.nets = this.add.group();
 
     this.player = this.physics.add.sprite(300, 400, 'crab');
     this.nets = this.add.group();
@@ -59,7 +65,7 @@ class Panic extends Phaser.Scene {
       frameRate: 4
     });
 
-    this.createNet = function() {
+    this.createNet = function () {
       this.net = this.physics.add.sprite(
         Math.ceil(Math.random() * 2000) + 1,
         this.player.y + 420,
@@ -103,6 +109,7 @@ class Panic extends Phaser.Scene {
 
     this.physics.add.overlap(this.nets, this.player, e => {
       if (e.frame.name == 3) {
+        this.dreaded.stop();
         this.scene.pause();
         setTimeout(() => {
           this.scene.start('End');
