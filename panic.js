@@ -5,7 +5,7 @@ class Panic extends Phaser.Scene {
 
   preload() {
     this.load.image('BG', 'assets/background-sand.png');
-
+    this.load.image('hole', 'assets/hole.png');
     this.load.spritesheet('crab', 'assets/crab.png', {
       frameWidth: 100,
       frameHeight: 55
@@ -16,6 +16,7 @@ class Panic extends Phaser.Scene {
 
   create() {
     this.background = this.add.image(800, 5000, 'BG');
+    this.hole = this.add.image(800, 9900, 'hole');
     this.cameras.main.setBounds(0, 0, 800 * 2, 5000 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 5000 * 2);
 
