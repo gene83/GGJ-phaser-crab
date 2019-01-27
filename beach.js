@@ -64,20 +64,21 @@ class Beach extends Phaser.Scene {
       }
     }
 
-    this.input.keyboard.on('keyup', e => {
-      if (e.key == '2') {
-        this.scene.start('Panic');
-      }
-    });
-
-    this.physics.add.collider(
+    this.physics.add.overlap(
       this.player,
-      this.lights
-      //   () => {
-      //   this.scene.start('Panic');
-      // }
+      this.lights,
+      () => {
+        this.timedEvent = this.time.delayedCall(800, onEvent, [], this);
+        if (!this.lights.overlap) {
+          return this.timedEvent;
+        }
+      },
+      null,
+      this
     );
-
+    function onEvent() {
+      console.log('it works');
+    }
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     this.key_LEFT = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.LEFT
