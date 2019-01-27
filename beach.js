@@ -8,22 +8,48 @@ class Beach extends Phaser.Scene {
     const progressBox = this.add.graphics();
     progressBox.fillStyle(0x222222, 0.8);
     progressBox.fillRect(240, 270, 320, 50);
+    const width = this.cameras.main.width;
+    const height = this.cameras.main.height;
+    const loadingText = this.make.text({
+      x: width / 2,
+      y: height / 2 - 50,
+      text: 'Loading...',
+      style: {
+        font: '20px monospace',
+        fill: '#ffffff'
+      }
+    });
+
+    progressBar.x = 190;
+    progressBar.y = 300;
+    progressBox.x = 190;
+    progressBox.y = 300;
+    loadingText.setOrigin(0.5, 0.5);
+
+    const percentText = this.make.text({
+      x: width / 2,
+      y: height / 2 - 5,
+      text: '0%',
+      style: {
+        font: '18px monospace',
+        fill: '#ffffff'
+      }
+    });
+
+    percentText.setOrigin(0.5, 0.5);
 
     this.load.on('progress', (value) => {
-      console.log(value);
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
       progressBar.fillRect(250, 280, 300 * value, 30);
-    });
-
-    this.load.on('fileprogress', (file) => {
-      console.log(file.src);
+      percentText.setText(parseInt(value * 100) + '%');
     });
 
     this.load.on('complete', () => {
-      console.log('complete');
       progressBar.destroy();
       progressBox.destroy();
+      loadingText.destroy();
+      percentText.destroy();
     });
 
     this.load.image('bg', 'assets/background-sand.png');
@@ -43,12 +69,8 @@ class Beach extends Phaser.Scene {
     this.background.height = this.game.height;
     this.background.weight = this.game.weight;
 
-    console.log(game.height, game.width);
-
-
-
     this.lights = this.add.group();
-    this.shining = this.add.group();
+    this.plankton = this.add.group();
 
 
     this.cameras.main.setBounds(0, 0, 800 * 2, 6000 * 2);
@@ -63,31 +85,6 @@ class Beach extends Phaser.Scene {
       -100
     );
 
-    this.shine = this.anims.create({
-      key: 'shine',
-      frames: this.anims.generateFrameNumbers('plankton', {
-        start: 0,
-        end: 4
-      }),
-      frameRate: 10,
-      repeat: -1,
-    });
-
-    var config = {
-      key: 'food',
-      x: { randInt: [0, 2000] },
-      y: { randInt: [0, 10800] },
-      scale: { randFloat: [0.5, 1.5] },
-      anims: 'shine'
-    };
-
-    for (var i = 0; i < 80; i++) {
-      this.make.sprite(config);
-    }
-
-
-
-
     this.player = this.physics.add.sprite(300, 400, 'crab');
     this.player.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
@@ -101,8 +98,6 @@ class Beach extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
-
-
 
     // ADDS SPOTLIGHTS
     this.spriteBounds = Phaser.Geom.Rectangle.Inflate(
@@ -145,8 +140,31 @@ class Beach extends Phaser.Scene {
       this
     );
 
+    // ADDS PLANKTON
+    this.shine = this.anims.create({
+      key: 'shine',
+      frames: this.anims.generateFrameNumbers('plankton', {
+        start: 0,
+        end: 4
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    var config = {
+      key: 'food',
+      x: { randInt: [0, 2000] },
+      y: { randInt: [0, 10800] },
+      scale: { randFloat: [0.5, 1.5] },
+      anims: 'shine'
+    };
+
+    for (var i = 0; i < 80; i++) {
+      this.make.sprite(config);
+    }
+
     function onEvent() {
-      this.scene.start('Panic');
+      // this.scene.start('Panic');
     }
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
