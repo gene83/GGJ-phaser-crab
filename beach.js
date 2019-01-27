@@ -13,10 +13,10 @@ class Beach extends Phaser.Scene {
   }
 
   create() {
-    // this.add.image(400, 300, 'bg');
     this.background = this.add.image(0, 0, 'bg');
     this.background.height = game.height;
     this.background.weight = game.weight;
+
     this.lights = this.add.group();
 
     this.cameras.main.setBounds(0, 0, 800 * 2, 3800 * 2);
@@ -64,7 +64,19 @@ class Beach extends Phaser.Scene {
       }
     }
 
-    this.physics.add.collider(this.player, this.lights);
+    this.input.keyboard.on('keyup', e => {
+      if (e.key == '2') {
+        this.scene.start('Panic');
+      }
+    });
+
+    this.physics.add.collider(
+      this.player,
+      this.lights
+      //   () => {
+      //   this.scene.start('Panic');
+      // }
+    );
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     this.key_LEFT = this.input.keyboard.addKey(
