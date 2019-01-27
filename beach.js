@@ -3,6 +3,10 @@ class Beach extends Phaser.Scene {
     super({ key: 'Beach' });
   }
 
+  init(data) {
+    this.score = data.points;
+  }
+
   preload() {
     const progressBar = this.add.graphics();
     const progressBox = this.add.graphics();
@@ -38,7 +42,7 @@ class Beach extends Phaser.Scene {
 
     percentText.setOrigin(0.5, 0.5);
 
-    this.load.on('progress', (value) => {
+    this.load.on('progress', value => {
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
       progressBar.fillRect(250, 280, 300 * value, 30);
@@ -67,7 +71,6 @@ class Beach extends Phaser.Scene {
       frameHeight: 85,
       endFrame: 3
     });
-
   }
 
   create() {
@@ -75,15 +78,22 @@ class Beach extends Phaser.Scene {
     this.background.height = this.game.height;
     this.background.weight = this.game.weight;
     this.hole = this.add.image(800, 11900, 'hole');
-    //Sounds
+
     this.ping = this.sound.add('ping');
     this.rize = this.sound.add('rize');
-    this.rize.play()
+    this.rize.play();
 
     this.lights = this.add.group();
     this.shining = this.add.group();
-    this.score = 0;
-    this.scoreText = this.add.text(16, 16, 'Score: 0', { font: '60px monospace', fill: 'rgba(255, 255, 255, 0.75)' });
+
+    if (!this.score) {
+      this.score = 0;
+    }
+
+    this.scoreText = this.add.text(16, 16, `Score: ${this.score}`, {
+      font: '60px monospace',
+      fill: 'rgba(255, 255, 255, 0.75)'
+    });
     this.scoreText.setScrollFactor(0);
 
     this.cameras.main.setBounds(0, 0, 800 * 2, 6000 * 2);
@@ -114,21 +124,24 @@ class Beach extends Phaser.Scene {
     });
 
     for (let i = 0; i < 90; i++) {
-      this.plankton = this.physics.add.sprite(Math.ceil(Math.random() * 1600) + 1, Math.ceil(Math.random() * 11500) + 1, 'plankton');
+      this.plankton = this.physics.add.sprite(
+        Math.ceil(Math.random() * 1600) + 1,
+        Math.ceil(Math.random() * 11500) + 1,
+        'plankton'
+      );
       this.plankton.setCollideWorldBounds(true);
       this.shining.add(this.plankton);
     }
 
     this.shining.playAnimation('shine');
 
-    this.physics.add.overlap(this.shining, this.player, (e) => {
+    this.physics.add.overlap(this.shining, this.player, e => {
       e.disableBody(true, true);
       this.score += 100;
       this.scoreText.setText('Score: ' + this.score);
       this.music.play();
 
-      null,
-        this
+      null, this;
     });
 
     // ADDS SPOTLIGHTS
@@ -175,7 +188,7 @@ class Beach extends Phaser.Scene {
 
     function onEvent() {
       this.scene.start('Panic', {
-        "points": this.score
+        points: this.score
       });
     }
 
@@ -196,7 +209,6 @@ class Beach extends Phaser.Scene {
       this.player.setVelocityY(-400);
 
       this.player.anims.play('walk', true);
-
     } else if (this.key_LEFT.isDown) {
       this.player.setVelocityX(-400);
 
@@ -214,7 +226,6 @@ class Beach extends Phaser.Scene {
       this.player.setVelocityY(0);
 
       this.player.anims.play('walk', false);
-
     }
   }
 }
