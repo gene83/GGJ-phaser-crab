@@ -25,7 +25,7 @@ class Panic extends Phaser.Scene {
       frameHeight: 560
     });
     this.load.audio('tada', 'assets/ta-da.mp3');
-    this.load.audio('dreaded', 'assets/dreaded.mp3');
+    this.load.audio('panic-track', 'assets/Panic.mp3');
   }
 
   create() {
@@ -39,7 +39,7 @@ class Panic extends Phaser.Scene {
     });
     this.scoreText.setScrollFactor(0);
 
-    this.dreaded = this.sound.add('dreaded');
+    this.dreaded = this.sound.add('panic-track');
     this.dreaded.play();
 
     this.hole = this.add.image(800, 9900, 'hole');
