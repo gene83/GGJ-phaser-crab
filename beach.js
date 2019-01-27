@@ -9,14 +9,14 @@ class Beach extends Phaser.Scene {
     progressBox.fillStyle(0x222222, 0.8);
     progressBox.fillRect(240, 270, 320, 50);
 
-    this.load.on('progress', (value) => {
+    this.load.on('progress', value => {
       console.log(value);
       progressBar.clear();
       progressBar.fillStyle(0xffffff, 1);
       progressBar.fillRect(250, 280, 300 * value, 30);
     });
 
-    this.load.on('fileprogress', (file) => {
+    this.load.on('fileprogress', file => {
       console.log(file.src);
     });
 
@@ -35,16 +35,14 @@ class Beach extends Phaser.Scene {
   }
 
   create() {
-    this.background = this.add.image(0, 0, 'bg');
-    this.background.height = game.height;
-    this.background.weight = game.weight;
+    this.background = this.add.image(1600, 6000, 'bg');
 
     console.log(game.height, game.width);
 
     this.lights = this.add.group();
 
-    this.cameras.main.setBounds(0, 0, 800 * 2, 3800 * 2);
-    this.physics.world.setBounds(0, 0, 800 * 2, 3800 * 2);
+    this.cameras.main.setBounds(0, 0, 1600 * 2, 7600 * 2);
+    this.physics.world.setBounds(0, 0, 1600 * 2, 7600 * 2);
 
     this.player = this.physics.add.sprite(300, 400, 'crab');
     this.player.setCollideWorldBounds(true);
