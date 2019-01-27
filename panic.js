@@ -62,14 +62,14 @@ class Panic extends Phaser.Scene {
     setInterval(this.makeNet, 300);
     this.nets.playAnimation('netDown');
 
-    this.physics.add.overlap(this.nets, this.player, e => {
-      if (e.frame.name == 3) {
-        this.scene.pause();
-      }
-    });
+    // this.physics.add.overlap(this.nets, this.player, e => {
+    //   if (e.frame.name == 3) {
+    //     this.scene.pause();
+    //   }
+    // });
 
-    this.physics.add.overlap(this.player, this.hole, (e) => {
-      e.disableBody(true, true);
+    this.physics.add.overlap(this.hole, this.player, () => {
+      this.player.disableBody(true, true);
       this.timedEvent = this.time.delayedCall(400, safe, [], this);
       if (!this.hole.overlap) {
         return this.timedEvent;
@@ -80,9 +80,7 @@ class Panic extends Phaser.Scene {
     );
 
     function safe() {
-      this.scene.start('beach', {
-        points
-      });
+      this.scene.start('beach');
     }
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
