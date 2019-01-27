@@ -64,8 +64,17 @@ class Beach extends Phaser.Scene {
       }
     }
 
-    this.physics.add.collider(this.player, this.lights);
+    this.physics.add.overlap(this.player, this.lights, () => {
 
+      this.timedEvent = this.time.delayedCall(800, onEvent, [], this);
+      if (!this.lights.overlap) {
+        return this.timedEvent;
+      }
+    }, null, this);
+    ;
+    function onEvent() {
+      console.log('it works')
+    }
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     this.key_LEFT = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.LEFT
@@ -77,6 +86,7 @@ class Beach extends Phaser.Scene {
       Phaser.Input.Keyboard.KeyCodes.RIGHT
     );
   }
+
 
   update(delta) {
     if (this.key_UP.isDown) {
@@ -102,4 +112,5 @@ class Beach extends Phaser.Scene {
       this.player.anims.play('walk', false);
     }
   }
+
 }
