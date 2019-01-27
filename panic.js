@@ -8,10 +8,11 @@ class Panic extends Phaser.Scene {
   }
 
   create() {
-    this.background = this.add.image(0, 0, 'redBG');
+    this.background = this.add.image(400, 400, 'redBG');
     this.background.height = game.height;
     this.background.weight = game.weight;
 
+    console.log(game.height, game.width);
     // this.anims.create({
     //   key: 'flashBackground',
     //   frames: this.anims.generateFrameNumbers('panicBG', {

@@ -17,6 +17,8 @@ class Beach extends Phaser.Scene {
     this.background.height = game.height;
     this.background.weight = game.weight;
 
+    console.log(game.height, game.width);
+
     this.lights = this.add.group();
 
     this.cameras.main.setBounds(0, 0, 800 * 2, 3800 * 2);
@@ -68,7 +70,7 @@ class Beach extends Phaser.Scene {
       this.player,
       this.lights,
       () => {
-        this.timedEvent = this.time.delayedCall(800, onEvent, [], this);
+        this.timedEvent = this.time.delayedCall(400, onEvent, [], this);
         if (!this.lights.overlap) {
           return this.timedEvent;
         }
@@ -76,9 +78,11 @@ class Beach extends Phaser.Scene {
       null,
       this
     );
+
     function onEvent() {
-      console.log('it works');
+      this.scene.start('Panic');
     }
+
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     this.key_LEFT = this.input.keyboard.addKey(
       Phaser.Input.Keyboard.KeyCodes.LEFT
