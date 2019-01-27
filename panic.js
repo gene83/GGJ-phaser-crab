@@ -15,12 +15,17 @@ class Panic extends Phaser.Scene {
       frameWidth: 336,
       frameHeight: 560
     });
+    this.load.audio('tada', 'assets/ta-da.mp3');
+    this.load.audio('dreaded', 'assets/dreaded.mp3');
   }
 
   create() {
     this.background = this.add.image(800, 5000, 'BG');
     this.cameras.main.setBounds(0, 0, 800 * 2, 5000 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 5000 * 2);
+
+    this.dreaded = this.sound.add('dreaded');
+    this.dreaded.play();
 
     this.hole = this.add.image(800, 9900, 'hole');
     // this.hole.setCollideWorldBounds(true);
@@ -70,6 +75,8 @@ class Panic extends Phaser.Scene {
 
     this.physics.add.overlap(this.player, this.hole, (e) => {
       e.disableBody(true, true);
+      this.tada = this.sound.add('tada');
+      this.tada.play();
       this.timedEvent = this.time.delayedCall(400, safe, [], this);
       if (!this.hole.overlap) {
         return this.timedEvent;
