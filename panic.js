@@ -5,8 +5,12 @@ class Panic extends Phaser.Scene {
 
   preload() {
     this.load.image('BG', 'assets/background-sand.png');
-    this.load.image('hole', 'assets/hole.png');
     this.load.spritesheet('crab', 'assets/crab.png', {
+      frameWidth: 100,
+      frameHeight: 55
+    });
+
+    this.load.image('hole', 'assets/hole.png', {
       frameWidth: 100,
       frameHeight: 55
     });
@@ -21,12 +25,16 @@ class Panic extends Phaser.Scene {
     this.background = this.add.image(800, 5000, 'BG');
     this.cameras.main.setBounds(0, 0, 800 * 2, 5000 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 5000 * 2);
+    this.score = this.points;
+    this.scoreText = this.add.text(16, 16, 'Score: 0', { font: '60px monospace', fill: 'rgba(255, 255, 255, 0.75)' });
+    this.scoreText.setScrollFactor(0);
 
-    this.hole = this.add.image(800, 9900, 'hole');
-    // this.hole.setCollideWorldBounds(true);
-    this.nets = this.add.group();
+    // this.hole = this.physics.add.image(800, 9900, 'hole');
+    this.hole = this.physics.add.image(800, 100, 'hole');
 
     this.player = this.physics.add.sprite(300, 400, 'crab');
+    this.nets = this.add.group();
+
     this.player.setCollideWorldBounds(true);
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
 
@@ -55,33 +63,34 @@ class Panic extends Phaser.Scene {
         'net'
       );
       this.nets.add(this.net);
+      this.net.anims.play('netDown', true);
     };
 
     this.makeNet = this.createNet.bind(this);
 
-    setInterval(this.makeNet, 300);
+    this.intervalId = setInterval(this.makeNet, 300);
     this.nets.playAnimation('netDown');
+
+
+    this.physics.add.overlap(this.player, this.hole, () => {
+      clearInterval(this.intervalId);
+      this.player.disableBody(true, true);
+      this.cameras.main.fade(2000, 0, 0, 0);
+
+      setTimeout(() => {
+        this.scene.start('Beach');
+      }, 2000);
+
+    },
+      null,
+      this
+    );
 
     // this.physics.add.overlap(this.nets, this.player, e => {
     //   if (e.frame.name == 3) {
     //     this.scene.pause();
     //   }
     // });
-
-    this.physics.add.overlap(this.hole, this.player, () => {
-      this.player.disableBody(true, true);
-      this.timedEvent = this.time.delayedCall(400, safe, [], this);
-      if (!this.hole.overlap) {
-        return this.timedEvent;
-      }
-    },
-      null,
-      this
-    );
-
-    function safe() {
-      this.scene.start('beach');
-    }
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     this.key_LEFT = this.input.keyboard.addKey(
@@ -113,16 +122,12 @@ class Panic extends Phaser.Scene {
 
       this.player.anims.play('panicWalk', true);
     } else {
-      // this.player.setVelocityX(0);
-      // this.player.setVelocityY(0);
 
       this.player.anims.play('panicWalk', true);
     }
 
     this.cameras.main.flash(500, 198, 40, 40, false);
     this.cameras.main.shake(1000, 0.005, false);
-
-    this.net.anims.play('netDown', true);
   }
 
 }
