@@ -58,6 +58,9 @@ class Beach extends Phaser.Scene {
 
     this.load.image('bg', 'assets/background-sand.png');
     this.load.image('hole', 'assets/hole.png');
+    this.load.audio('sfx', 'assets/ding.wav');
+    this.load.audio('rize', 'assets/rize-up.mp3');
+
     this.load.spritesheet('crab', 'assets/crab.png', {
       frameWidth: 100,
       frameHeight: 55
@@ -75,6 +78,11 @@ class Beach extends Phaser.Scene {
     this.background.height = this.game.height;
     this.background.weight = this.game.weight;
     this.hole = this.add.image(800, 11900, 'hole');
+    //Sounds
+    this.music = this.sound.add('sfx');
+    this.rize = this.sound.add('rize');
+    this.rize.play();
+
     this.lights = this.add.group();
     this.shining = this.add.group();
 
@@ -115,10 +123,10 @@ class Beach extends Phaser.Scene {
       repeat: -1
     });
 
-    for (let i = 0; i < 80; i++) {
+    for (let i = 0; i < 90; i++) {
       this.plankton = this.physics.add.sprite(
-        Math.ceil(Math.random() * 2000) + 1,
-        Math.ceil(Math.random() * 10800) + 1,
+        Math.ceil(Math.random() * 1600) + 1,
+        Math.ceil(Math.random() * 11500) + 1,
         'plankton'
       );
       this.plankton.setCollideWorldBounds(true);
@@ -127,21 +135,14 @@ class Beach extends Phaser.Scene {
 
     this.shining.playAnimation('shine');
 
-    this.physics.add.overlap(
-      this.shining,
-      this.player,
-      e => {
-        e.disableBody(true, true);
+    this.physics.add.overlap(this.shining, this.player, e => {
+      e.disableBody(true, true);
+      this.score += 100;
+      this.scoreText.setText('Score: ' + this.score);
+      this.music.play();
 
-        this.score += 100;
-        this.scoreText.setText('Score: ' + this.score);
-
-        console.log('SCORETEXT', this.scoreText);
-        console.log('SCORE', this.score);
-      },
-      null,
-      this
-    );
+      null, this;
+    });
 
     // ADDS SPOTLIGHTS
     this.spriteBounds = Phaser.Geom.Rectangle.Inflate(
@@ -176,6 +177,7 @@ class Beach extends Phaser.Scene {
       this.lights,
       () => {
         this.timedEvent = this.time.delayedCall(400, onEvent, [], this);
+        this.rize.stop();
         if (!this.lights.overlap) {
           return this.timedEvent;
         }
