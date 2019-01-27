@@ -74,7 +74,8 @@ class Beach extends Phaser.Scene {
     this.lights = this.add.group();
     this.shining = this.add.group();
     this.score = 0;
-
+    this.scoreText = this.add.text(16, 16, 'Score: 0', { font: '60px monospace', fill: 'rgba(255, 255, 255, 0.75)' });
+    this.scoreText.setScrollFactor(0);
 
     this.cameras.main.setBounds(0, 0, 800 * 2, 6000 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 6000 * 2);
@@ -112,9 +113,12 @@ class Beach extends Phaser.Scene {
     this.shining.playAnimation('shine');
 
     this.physics.add.overlap(this.shining, this.player, (e) => {
-      console.log("SCORE WORKING");
       e.disableBody(true, true);
-      this.score += 1;
+
+      this.score += 100;
+      this.scoreText.setText('Score: ' + this.score);
+
+      console.log('SCORETEXT', this.scoreText)
       console.log('SCORE', this.score);
     },
       null,
@@ -163,7 +167,9 @@ class Beach extends Phaser.Scene {
     );
 
     function onEvent() {
-      this.scene.start('Panic');
+      this.scene.start('Panic', {
+        "points": this.score
+      });
     }
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
