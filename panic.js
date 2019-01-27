@@ -33,7 +33,7 @@ class Panic extends Phaser.Scene {
     this.scoreText.setScrollFactor(0);
 
     // this.hole = this.physics.add.image(800, 9900, 'hole');
-    this.hole = this.physics.add.image(800, 100, 'hole');
+    this.hole = this.physics.add.image(800, 9900, 'hole');
 
     this.player = this.physics.add.sprite(300, 400, 'crab');
     this.nets = this.add.group();
@@ -104,6 +104,9 @@ class Panic extends Phaser.Scene {
     this.physics.add.overlap(this.nets, this.player, e => {
       if (e.frame.name == 3) {
         this.scene.pause();
+        setTimeout(() => {
+          this.scene.start('End');
+        }, 2000);
       }
     });
 
