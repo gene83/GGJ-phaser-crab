@@ -54,7 +54,7 @@ class Beach extends Phaser.Scene {
 
     this.load.image('bg', 'assets/background-sand.png');
     this.load.image('hole', 'assets/hole.png');
-    this.load.audio('sfx', 'assets/ding.wav');
+    this.load.audio('ping', 'assets/ding.wav');
     this.load.audio('rize', 'assets/rize-up.mp3');
 
     this.load.spritesheet('crab', 'assets/crab.png', {
@@ -76,7 +76,7 @@ class Beach extends Phaser.Scene {
     this.background.weight = this.game.weight;
     this.hole = this.add.image(800, 11900, 'hole');
     //Sounds
-    this.music = this.sound.add('sfx');
+    this.ping = this.sound.add('ping');
     this.rize = this.sound.add('rize');
     this.rize.play()
 
