@@ -26,7 +26,10 @@ class Panic extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 800 * 2, 5000 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 5000 * 2);
     this.score = this.points;
-    this.scoreText = this.add.text(16, 16, 'Score: 0', { font: '60px monospace', fill: 'rgba(255, 255, 255, 0.75)' });
+    this.scoreText = this.add.text(16, 16, 'Score: 0', {
+      font: '60px monospace',
+      fill: 'rgba(255, 255, 255, 0.75)'
+    });
     this.scoreText.setScrollFactor(0);
 
     // this.hole = this.physics.add.image(800, 9900, 'hole');
@@ -79,46 +82,30 @@ class Panic extends Phaser.Scene {
 
     this.makeNet = this.createNet.bind(this);
 
-<<<<<<< HEAD
-    setInterval(this.makeNet, 350);
-=======
     this.intervalId = setInterval(this.makeNet, 300);
     this.nets.playAnimation('netDown');
->>>>>>> 3ddbc5e5a7b2330ef6d5a570acaa268f129d3587
 
-
-<<<<<<< HEAD
     this.physics.add.overlap(
       this.player,
       this.hole,
-      e => {
-        e.disableBody(true, true);
-        this.timedEvent = this.time.delayedCall(400, safe, [], this);
-        if (!this.hole.overlap) {
-          return this.timedEvent;
-        }
+      () => {
+        clearInterval(this.intervalId);
+        this.player.disableBody(true, true);
+        this.cameras.main.fade(2000, 0, 0, 0);
+
+        setTimeout(() => {
+          this.scene.start('Beach');
+        }, 2000);
       },
-=======
-    this.physics.add.overlap(this.player, this.hole, () => {
-      clearInterval(this.intervalId);
-      this.player.disableBody(true, true);
-      this.cameras.main.fade(2000, 0, 0, 0);
-
-      setTimeout(() => {
-        this.scene.start('Beach');
-      }, 2000);
-
-    },
->>>>>>> 3ddbc5e5a7b2330ef6d5a570acaa268f129d3587
       null,
       this
     );
 
-    // this.physics.add.overlap(this.nets, this.player, e => {
-    //   if (e.frame.name == 3) {
-    //     this.scene.pause();
-    //   }
-    // });
+    this.physics.add.overlap(this.nets, this.player, e => {
+      if (e.frame.name == 3) {
+        this.scene.pause();
+      }
+    });
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
     this.key_LEFT = this.input.keyboard.addKey(
@@ -150,16 +137,10 @@ class Panic extends Phaser.Scene {
 
       this.player.anims.play('panicWalk', true);
     } else {
-
       this.player.anims.play('panicWalk', true);
     }
 
     this.cameras.main.flash(500, 198, 40, 40, false);
     this.cameras.main.shake(1000, 0.005, false);
-<<<<<<< HEAD
-
-    // this.net.anims.play('netDown', false);
-=======
->>>>>>> 3ddbc5e5a7b2330ef6d5a570acaa268f129d3587
   }
 }
