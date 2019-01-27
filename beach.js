@@ -9,10 +9,7 @@ class Beach extends Phaser.Scene {
       frameWidth: 250,
       frameHeight: 200
     });
-    this.load.spritesheet('light', 'assets/spotlight.png', {
-      frameWidth: 250,
-      frameHeight: 200
-    });
+    this.load.image('light', 'assets/spotlight.png');
   }
 
   create() {
@@ -20,16 +17,6 @@ class Beach extends Phaser.Scene {
 
     this.cameras.main.setBounds(0, 0, 800 * 2, 7800 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 7800 * 2);
-
-    this.anims.create({
-      key: 'light',
-      frames: this.anims.generateFrameNumbers('light', {
-        start: 0,
-        end: 1
-      }),
-      frameRate: 10,
-      repeat: -1
-    });
 
     this.anims.create({
       key: 'walk',
@@ -47,10 +34,10 @@ class Beach extends Phaser.Scene {
       -100
     );
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 20; i++) {
       let pos = Phaser.Geom.Rectangle.Random(this.spriteBounds);
 
-      let block = this.physics.add.sprite(pos.x, pos.y, 'light');
+      let block = this.physics.add.image(pos.x, pos.y, 'light');
 
       block.setVelocity(
         Phaser.Math.Between(200, 400),
@@ -63,8 +50,6 @@ class Beach extends Phaser.Scene {
       } else {
         block.body.velocity.y *= -1;
       }
-
-      block.play('light');
     }
 
     this.player = this.physics.add.sprite(300, 400, 'crab');
