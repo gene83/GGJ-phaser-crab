@@ -37,8 +37,6 @@ class Beach extends Phaser.Scene {
   create() {
     this.background = this.add.image(800, 6000, 'bg');
 
-    console.log(game.height, game.width);
-
     this.lights = this.add.group();
 
     this.cameras.main.setBounds(0, 0, 800 * 2, 7600 * 2);
