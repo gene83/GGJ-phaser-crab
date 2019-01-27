@@ -28,7 +28,7 @@ class Panic extends Phaser.Scene {
 
     this.player = this.physics.add.sprite(300, 400, 'crab');
     this.player.setCollideWorldBounds(true);
-    this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
+    this.cameras.main.startFollow(this.player, true, 0.5, 0.5, null, -100);
 
     this.anims.create({
       key: 'panicWalk',
@@ -45,22 +45,32 @@ class Panic extends Phaser.Scene {
         start: 0,
         end: 3
       }),
-      frameRate: 12
+      frameRate: 4
     });
 
-    this.createNet = function () {
+    this.createNet = function() {
       this.net = this.physics.add.sprite(
         Math.ceil(Math.random() * 2000) + 1,
-        this.player.y + Math.ceil(Math.random() * 600),
+        this.player.y + 420,
         'net'
       );
+
+      this.net.anims.play('netDown', false);
+
+      // this.net.on(
+      //   'animationcomplete',
+      //   function() {
+      //     this.net.destroy();
+      //   },
+      //   this
+      // );
+
       this.nets.add(this.net);
     };
 
     this.makeNet = this.createNet.bind(this);
 
-    setInterval(this.makeNet, 300);
-    this.nets.playAnimation('netDown');
+    setInterval(this.makeNet, 350);
 
     this.physics.add.overlap(this.nets, this.player, e => {
       if (e.frame.name == 3) {
@@ -68,13 +78,16 @@ class Panic extends Phaser.Scene {
       }
     });
 
-    this.physics.add.overlap(this.player, this.hole, (e) => {
-      e.disableBody(true, true);
-      this.timedEvent = this.time.delayedCall(400, safe, [], this);
-      if (!this.hole.overlap) {
-        return this.timedEvent;
-      }
-    },
+    this.physics.add.overlap(
+      this.player,
+      this.hole,
+      e => {
+        e.disableBody(true, true);
+        this.timedEvent = this.time.delayedCall(400, safe, [], this);
+        if (!this.hole.overlap) {
+          return this.timedEvent;
+        }
+      },
       null,
       this
     );
@@ -124,7 +137,6 @@ class Panic extends Phaser.Scene {
     this.cameras.main.flash(500, 198, 40, 40, false);
     this.cameras.main.shake(1000, 0.005, false);
 
-    this.net.anims.play('netDown', true);
+    // this.net.anims.play('netDown', false);
   }
-
 }
