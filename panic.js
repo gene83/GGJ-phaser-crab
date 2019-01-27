@@ -22,11 +22,11 @@ class Panic extends Phaser.Scene {
     this.cameras.main.setBounds(0, 0, 800 * 2, 5000 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 5000 * 2);
 
-    this.player = this.physics.add.sprite(300, 400, 'crab');
+    this.player = this.physics.add.sprite(400, 100, 'crab');
     this.player.setCollideWorldBounds(true);
-    this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
+    this.cameras.main.startFollow(this.player, true, 0.5, 9);
 
-    this.net = this.physics.add.sprite(400, 400, 'net');
+    this.nets = this.add.group();
 
     this.anims.create({
       key: 'panicWalk',
@@ -43,8 +43,27 @@ class Panic extends Phaser.Scene {
         start: 0,
         end: 3
       }),
-      frameRate: 4,
-      repeat: -1
+      frameRate: 12
+    });
+
+    this.createNet = function() {
+      this.net = this.physics.add.sprite(
+        Math.ceil(Math.random() * 2000) + 1,
+        this.player.y + Math.ceil(Math.random() * 600),
+        'net'
+      );
+      this.nets.add(this.net);
+    };
+
+    this.makeNet = this.createNet.bind(this);
+
+    setInterval(this.makeNet, 300);
+    this.nets.playAnimation('netDown');
+
+    this.physics.add.overlap(this.nets, this.player, e => {
+      if (e.frame.name == 3) {
+        this.scene.pause();
+      }
     });
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -77,15 +96,15 @@ class Panic extends Phaser.Scene {
 
       this.player.anims.play('panicWalk', true);
     } else {
-      this.player.setVelocityX(0);
-      this.player.setVelocityY(0);
+      // this.player.setVelocityX(0);
+      // this.player.setVelocityY(0);
 
       this.player.anims.play('panicWalk', true);
     }
 
-    // this.cameras.main.flash(500, 198, 40, 40, false);
-    // this.cameras.main.shake(1000, 0.005, false);
+    this.cameras.main.flash(500, 198, 40, 40, false);
+    this.cameras.main.shake(1000, 0.005, false);
 
-    this.net.anims.play('netDown', true);
+    this.net.anims.play('netDown', false);
   }
 }
