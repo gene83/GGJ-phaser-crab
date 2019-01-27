@@ -56,6 +56,7 @@ class Beach extends Phaser.Scene {
     this.load.image('hole', 'assets/hole.png');
     this.load.audio('sfx', 'assets/ding.wav');
     this.load.audio('rize', 'assets/rize-up.mp3');
+    this.load.audio('main', 'assets/main.mp3');
 
     this.load.spritesheet('crab', 'assets/crab.png', {
       frameWidth: 100,
@@ -77,8 +78,9 @@ class Beach extends Phaser.Scene {
     this.hole = this.add.image(800, 11900, 'hole');
     //Sounds
     this.music = this.sound.add('sfx');
-    this.rize = this.sound.add('rize');
-    this.rize.play()
+    this.mainTheme = this.sound.add('main');
+    this.mainTheme.play();
+
 
     this.lights = this.add.group();
     this.shining = this.add.group();
@@ -164,7 +166,7 @@ class Beach extends Phaser.Scene {
       this.lights,
       () => {
         this.timedEvent = this.time.delayedCall(400, onEvent, [], this);
-        this.rize.stop();
+        this.mainTheme.stop();
         if (!this.lights.overlap) {
           return this.timedEvent;
         }
