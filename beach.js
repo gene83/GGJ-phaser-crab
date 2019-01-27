@@ -32,19 +32,61 @@ class Beach extends Phaser.Scene {
       frameHeight: 55
     });
     this.load.image('light', 'assets/spotlight.png');
+    this.load.spritesheet('plankton', 'assets/plankton.png', {
+      frameWidth: 90,
+      frameHeight: 85
+    });
   }
 
   create() {
     this.background = this.add.image(0, 0, 'bg');
-    this.background.height = game.height;
-    this.background.weight = game.weight;
+    this.background.height = this.game.height;
+    this.background.weight = this.game.weight;
 
     console.log(game.height, game.width);
 
+
+
     this.lights = this.add.group();
+    this.shining = this.add.group();
+
 
     this.cameras.main.setBounds(0, 0, 800 * 2, 3800 * 2);
     this.physics.world.setBounds(0, 0, 800 * 2, 3800 * 2);
+
+    this.plankton = this.physics.add.sprite(100, 100, 'plankton');
+    this.plankton.setCollideWorldBounds(true);
+
+    this.spriteBounds = Phaser.Geom.Rectangle.Inflate(
+      Phaser.Geom.Rectangle.Clone(this.physics.world.bounds),
+      -100,
+      -100
+    );
+
+    this.shine = this.anims.create({
+      key: 'shine',
+      frames: this.anims.generateFrameNumbers('plankton', {
+        start: 0,
+        end: 4
+      }),
+      frameRate: 10,
+      repeat: -1,
+    });
+
+    var config = {
+      key: 'food',
+      x: { randInt: [0, 2000] },
+      y: { randInt: [0, 10800] },
+      scale: { randFloat: [0.5, 1.5] },
+      anims: 'shine'
+    };
+
+    for (var i = 0; i < 80; i++) {
+      this.make.sprite(config);
+    }
+
+
+
 
     this.player = this.physics.add.sprite(300, 400, 'crab');
     this.player.setCollideWorldBounds(true);
@@ -59,6 +101,8 @@ class Beach extends Phaser.Scene {
       frameRate: 10,
       repeat: -1
     });
+
+
 
     // ADDS SPOTLIGHTS
     this.spriteBounds = Phaser.Geom.Rectangle.Inflate(
@@ -102,7 +146,7 @@ class Beach extends Phaser.Scene {
     );
 
     function onEvent() {
-      this.scene.start('Panic');
+      // this.scene.start('Panic');
     }
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
@@ -118,10 +162,12 @@ class Beach extends Phaser.Scene {
   }
 
   update(delta) {
+    this.plankton.anims.play('shine', true);
     if (this.key_UP.isDown) {
       this.player.setVelocityY(-400);
 
       this.player.anims.play('walk', true);
+
     } else if (this.key_LEFT.isDown) {
       this.player.setVelocityX(-400);
 
@@ -139,6 +185,7 @@ class Beach extends Phaser.Scene {
       this.player.setVelocityY(0);
 
       this.player.anims.play('walk', false);
+
     }
   }
 }
