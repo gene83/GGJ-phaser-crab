@@ -104,6 +104,7 @@ class Panic extends Phaser.Scene {
         clearInterval(this.intervalId);
         this.player.disableBody(true, true);
         this.cameras.main.fade(2000, 0, 0, 0);
+        this.tada.play();
 
         setTimeout(() => {
           this.scene.start('Beach', { points: this.points });
@@ -116,7 +117,6 @@ class Panic extends Phaser.Scene {
     this.physics.add.overlap(this.nets, this.player, e => {
       if (e.frame.name == 3) {
         this.dreaded.stop();
-        this.tada.play();
         this.scene.pause();
         setTimeout(() => {
           this.scene.start('End', { points: this.points });
