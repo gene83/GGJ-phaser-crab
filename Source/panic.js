@@ -70,7 +70,7 @@ class Panic extends Phaser.Scene {
       frameRate: 4
     });
 
-    this.createNet = function() {
+    this.createNet = function () {
       this.net = this.physics.add.sprite(
         Math.ceil(Math.random() * 2000) + 1,
         this.player.y + 420,
@@ -93,7 +93,7 @@ class Panic extends Phaser.Scene {
 
     this.makeNet = this.createNet.bind(this);
 
-    this.intervalId = setInterval(this.makeNet, 375);
+    this.intervalId = setInterval(this.makeNet, 450);
     this.nets.playAnimation('netDown');
 
     this.physics.add.overlap(
@@ -103,6 +103,7 @@ class Panic extends Phaser.Scene {
         clearInterval(this.intervalId);
         this.player.disableBody(true, true);
         this.cameras.main.fade(2000, 0, 0, 0);
+        this.dreaded.stop();
 
         setTimeout(() => {
           this.scene.start('Beach', { points: this.points });
