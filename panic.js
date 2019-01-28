@@ -41,6 +41,7 @@ class Panic extends Phaser.Scene {
 
     this.dreaded = this.sound.add('panic-track');
     this.dreaded.play();
+    this.tada = this.sound.add('tada');
 
     this.hole = this.physics.add.image(800, 9900, 'hole');
     // this.hole.setCollideWorldBounds(true);
@@ -70,7 +71,7 @@ class Panic extends Phaser.Scene {
       frameRate: 4
     });
 
-    this.createNet = function() {
+    this.createNet = function () {
       this.net = this.physics.add.sprite(
         Math.ceil(Math.random() * 2000) + 1,
         this.player.y + 420,
@@ -115,6 +116,7 @@ class Panic extends Phaser.Scene {
     this.physics.add.overlap(this.nets, this.player, e => {
       if (e.frame.name == 3) {
         this.dreaded.stop();
+        this.tada.play();
         this.scene.pause();
         setTimeout(() => {
           this.scene.start('End', { points: this.points });
