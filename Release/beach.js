@@ -60,6 +60,7 @@ class Beach extends Phaser.Scene {
     this.load.image('hole', 'assets/hole.png');
     this.load.audio('sfx', 'assets/ding.wav');
     this.load.audio('main', 'assets/main.mp3');
+    this.load.audio('alarm', 'assets/alarm.mp3')
 
     this.load.spritesheet('crab', 'assets/crab.png', {
       frameWidth: 100,
@@ -83,6 +84,7 @@ class Beach extends Phaser.Scene {
     this.mainTheme = this.sound.add('main');
     this.mainTheme.play();
     this.ping = this.sound.add('ping');
+    this.alarm = this.sound.add('alarm');
 
     this.lights = this.add.group();
     this.shining = this.add.group();
@@ -188,9 +190,13 @@ class Beach extends Phaser.Scene {
     );
 
     function onEvent() {
-      this.scene.start('Panic', {
-        points: this.score
-      });
+      this.alarm.play();
+      this.scene.pause();
+      setTimeout(() => {
+        this.scene.start('Panic', {
+          points: this.score
+        });
+      }, 500);
     }
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
