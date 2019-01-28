@@ -26,6 +26,7 @@ class Panic extends Phaser.Scene {
     });
     this.load.audio('tada', 'assets/ta-da.mp3');
     this.load.audio('panic-track', 'assets/Panic.mp3');
+    this.load.audio('alarm', 'assets/alarm.mp3');
   }
 
   create() {
@@ -41,6 +42,7 @@ class Panic extends Phaser.Scene {
 
     this.dreaded = this.sound.add('panic-track');
     this.dreaded.play();
+    this.alarm = this.sound.add('alarm');
 
     this.hole = this.physics.add.image(800, 9900, 'hole');
     // this.hole.setCollideWorldBounds(true);
@@ -93,7 +95,7 @@ class Panic extends Phaser.Scene {
 
     this.makeNet = this.createNet.bind(this);
 
-    this.intervalId = setInterval(this.makeNet, 450);
+    this.intervalId = setInterval(this.makeNet, 500);
     this.nets.playAnimation('netDown');
 
     this.physics.add.overlap(
@@ -116,6 +118,7 @@ class Panic extends Phaser.Scene {
     this.physics.add.overlap(this.nets, this.player, e => {
       if (e.frame.name == 3) {
         this.dreaded.stop();
+        this.alarm.play();
         this.scene.pause();
         setTimeout(() => {
           this.scene.start('End', { points: this.points });
