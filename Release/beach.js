@@ -83,7 +83,6 @@ class Beach extends Phaser.Scene {
     this.music = this.sound.add('sfx');
     this.mainTheme = this.sound.add('main');
     this.mainTheme.play();
-    this.ping = this.sound.add('ping');
     this.alarm = this.sound.add('alarm');
 
     this.lights = this.add.group();
@@ -157,7 +156,7 @@ class Beach extends Phaser.Scene {
     for (let i = 0; i < 20; i++) {
       let pos = Phaser.Geom.Rectangle.Random(this.spriteBounds);
 
-      let block = this.physics.add.image(pos.x, pos.y, 'light');
+      let block = this.physics.add.image(pos.x, pos.y - 1100, 'light');
 
       this.lights.add(block);
 
@@ -196,7 +195,7 @@ class Beach extends Phaser.Scene {
         this.scene.start('Panic', {
           points: this.score
         });
-      }, 500);
+      }, 1000);
     }
 
     this.key_UP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
