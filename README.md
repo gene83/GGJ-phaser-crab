@@ -25,8 +25,15 @@ See how high you can score!
 
 ## Technologies & Frameworks
 
-- Phaser.io
+* Phaser.io
 
 ## How to run
-* Run “npm install” to install all dependencies
-* Run “live-server” from the "Release" directory
+
+* Clone this repo
+* Run `npm install` from the terminal in this projects directory
+* Use the `cd Release` command to change to the **Release** directory
+* Run the `live-server` command from the **Release** directory
+
+## Screenshots
+
+
